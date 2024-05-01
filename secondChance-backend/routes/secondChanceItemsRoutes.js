@@ -44,10 +44,10 @@ router.post('/', upload.single('file'), async (req, res, next) => {
     let newId = 1 // Default ID for the first record
     if (lastItem) {
       newId = parseInt(lastItem.id) + 1
-    }  
+    }
     secondChanceItem.id = newId.toString()
     const dateAdded = Math.floor(new Date().getTime() / 1000)
-    secondChanceItem.date_added = dateAdded  
+    secondChanceItem.date_added = dateAdded
     await collection.insertOne(secondChanceItem)
     res.status(201).json(secondChanceItem)
   } catch (e) {
