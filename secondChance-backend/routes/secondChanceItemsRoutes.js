@@ -39,24 +39,21 @@ router.post('/', upload.single('file'), async (req, res, next) => {
   try {
     const db = await connectToDatabase()
     const collection = db.collection('secondChanceItems')
-    let secondChanceItem = req.body
-  
+    const secondChanceItem = req.body
     const lastItem = await collection.findOne({}, { sort: { id: -1 } })
-    let newId = 1; // Default ID for the first record
+    let newId = 1 // Default ID for the first record
     if (lastItem) {
       newId = parseInt(lastItem.id) + 1
-    }
-  
-    secondChanceItem.id = newId.toString();
-    const dateAdded = Math.floor(new Date().getTime() / 1000);
-    secondChanceItem.date_added = dateAdded
-  
+    }  
+    secondChanceItem.id = newId.toString()
+    const dateAdded = Math.floor(new Date().getTime() / 1000)
+    secondChanceItem.date_added = dateAdded  
     await collection.insertOne(secondChanceItem)
     res.status(201).json(secondChanceItem)
   } catch (e) {
     next(e)
   }
-});
+})
 
 // Get a single secondChanceItem by ID
 router.get('/:id', async (req, res, next) => {
